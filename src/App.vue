@@ -3,6 +3,7 @@
     <h1>欢迎</h1>
     <h2>高岗</h2>
     <h1>aaaaaaaaaaa</h1>
+    <h2>bbbbbbbbb</h2>
   </div>
 </template>
 
