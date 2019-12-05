@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <h1>欢迎</h1>
+    <h2>高岗</h2>
   </div>
 </template>
 
