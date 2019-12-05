@@ -3,13 +3,13 @@
     <div class="img"></div>
     <h2 class="h2">渠道商管理平台</h2>
     <form class="form">
-      <select name id>
+      <select class="select">
         <option value>管理员</option>
         <option value>企业</option>
         <option value>平台</option>
       </select>
-      <input type="text" placeholder="账号" />
-      <input type="text" placeholder="密码" />
+      <input type="text" placeholder="账号" v-model="name" />
+      <input type="text" placeholder="密码" v-model="password" />
       <input type="button" value="登录" @click="loginto()" />
     </form>
   </div>
@@ -22,23 +22,43 @@
 export default {
   data() {
     return {
-      f: false
+      f: false,
+      name: "",
+      password: ""
     };
   },
   methods: {
     //登录
     loginto() {
-      // 收集表单数据 --- ajax -- 接口 ---/
-      ////node --- 数据库查询用户密码是否正确
-      // 返回 --- 正确（token） -- 错误
+      // 收集表单数据
+      let { name, password } = this;
 
-      // 正确 -- 保存token --- 跳转到 base 页面
+      //// --- ajax -- 接口 ---/node --- 数据库查询用户密码是否正确
+      this.axios
+        .post("/login", {
+          name: name,
+          password: password
+        })
+        .then(res => {
+          console.log(res.data);
+          if (res.data.err_code == 200) {
+            // 正确 -- 保存token --- 跳转到 base 页面
+            localStorage.setItem("houtaitoken",JSON.stringify({id:res.data.id,token:res.data.token}))
+
+            //跳转到 base 页面 
+            this.f = true; //显示 ✅ div
+            setTimeout(() => {
+              this.$router.push({ name: "fxuser" });
+            }, 3000);
+
+
+          } else {
+            this.name = "";
+            this.password = "";
+          }
+        });
+
       //错误-- 当前页面 不跳转
-
-      this.f = true; //显示 ✅ div
-      setTimeout(() => {
-        this.$router.push({ name: "base" });
-      }, 3000);
     }
   }
 };
@@ -47,6 +67,20 @@ export default {
 * {
   margin: 0;
   padding: 0;
+}
+
+.select {
+  border: 1px solid #ccc;
+  line-height: 40px;
+  color: #666;
+  font-size: 20px;
+  margin-bottom: 10px;
+  /* padding: 15px; */
+}
+
+input {
+  height: 25px;
+  margin-bottom: 5px;
 }
 .ok {
   height: 100vh;
