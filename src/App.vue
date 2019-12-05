@@ -1,5 +1,7 @@
 <template>
-  <div id="app">aaa</div>
+  <div id="app">
+    <h1>欢迎</h1>
+  </div>
 </template>
 
 <script>
