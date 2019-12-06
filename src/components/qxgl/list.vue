@@ -30,33 +30,20 @@ export default {
       rows.splice(index, 1);
     }
   },
+  mounted() {
+    this.axios.get("/listquanxian").then(res => {
+      this.tableData = res.data.info;
+    });
+  },
   data() {
     return {
       tableData: [
-        {
-          _id: "1",
-          title: "统计",
-          name: "",
-          pid: 0
-        },
-        {
-          _id: "2",
-          title: "用户统计",
-          name: "fxuser",
-          pid: "1"
-        },
-        {
-          _id: "3",
-          title: "管理",
-          name: "",
-          pid: 0
-        },
-        {
-          _id: "4",
-          title: "用户管理",
-          name: "gluser",
-          pid: "3"
-        }
+        // {
+        //   _id: "1",
+        //   title: "统计",
+        //   name: "",
+        //   pid: 0
+        // }
       ]
     };
   }
