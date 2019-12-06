@@ -15,6 +15,7 @@
                 <i class="el-icon-orange"></i>
                 <span>统计</span>
               </template>
+
               <el-menu-item-group>
                 <el-menu-item index="1-1" @click="$router.push({'name':'fxuser'})">用户分析</el-menu-item>
                 <el-menu-item index="1-2" @click="$router.push({'name':'fxorder'})">订单分析</el-menu-item>
@@ -31,8 +32,20 @@
                 <el-menu-item index="2-2">商品管理</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
+
+            <!--权限管理 -->
+            <el-submenu index="3">
+              <template slot="title">
+                <i class="el-icon-folder"></i>
+                <span>权限管理</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item index="3-1" @click="$router.push({name:'qxgllist'})">权限列表</el-menu-item>
+              </el-menu-item-group>
+            </el-submenu>
           </el-menu>
         </el-aside>
+
         <!-- 右侧主体 -->
         <el-main>
           <router-view></router-view>

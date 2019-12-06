@@ -5,6 +5,10 @@ const login = () => import("@/view/login.vue")
 const base = () => import("@/view/base.vue")
 const fxUser = () => import("@/components/fenxi/user.vue")
 const fxOrder = () => import("@/components/fenxi/order.vue")
+const qxglList = () => import("@/components/qxgl/list.vue")
+const qxglAdd = () => import("@/components/qxgl/add.vue")
+
+
 import axios from "axios"
 Vue.use(Router)
 
@@ -29,7 +33,17 @@ let router = new Router({
           path: 'fxorder',
           name: 'fxorder',
           component: fxOrder,
-        }
+        },
+        {
+          path: 'qxgllist',
+          name: 'qxgllist',
+          component: qxglList,
+        },
+        {
+          path: 'qxgladd',
+          name: 'qxgladd',
+          component: qxglAdd,
+        },
       ]
     },
     {
