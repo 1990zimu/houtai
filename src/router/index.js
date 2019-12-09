@@ -5,10 +5,18 @@ const login = () => import("@/view/login.vue")
 const base = () => import("@/view/base.vue")
 const fxUser = () => import("@/components/fenxi/user.vue")
 const fxOrder = () => import("@/components/fenxi/order.vue")
+//权限管理 -- qxgl
 const qxglList = () => import("@/components/qxgl/list.vue")
 const qxglAdd = () => import("@/components/qxgl/add.vue")
+// 角色 --- js 
 const jsList = () => import("@/components/jsgl/list.vue")
 const jsAdd = () => import("@/components/jsgl/add.vue")
+const jsEdit = () => import("@/components/jsgl/edit.vue")
+
+// 管理员 -gly
+const glyList = () => import("@/components/gly/list.vue")
+const glyAdd = () => import("@/components/gly/add.vue")
+
 
 
 
@@ -28,6 +36,7 @@ let router = new Router({
       name: 'base',
       component: base,
       children: [
+        // 统计分析 -- fx
         {
           path: 'fxuser',
           name: 'fxuser',
@@ -38,6 +47,7 @@ let router = new Router({
           name: 'fxorder',
           component: fxOrder,
         },
+        //权限管理 --qxgl
         {
           path: 'qxgllist',
           name: 'qxgllist',
@@ -48,6 +58,7 @@ let router = new Router({
           name: 'qxgladd',
           component: qxglAdd,
         },
+        //角色 --- js 
         {
           path: 'jslist',
           name: 'jslist',
@@ -58,8 +69,26 @@ let router = new Router({
           name: 'jsadd',
           component: jsAdd,
         },
+        {
+          path: 'jsedit/:id',
+          name: 'jsedit',
+          component: jsEdit,
+        },
+        // 管理员 --gly
+        {
+          path: 'glylist',
+          name: 'glylist',
+          component: glyList,
+        },
+        {
+          path: 'glyadd',
+          name: 'glyadd',
+          component: glyAdd,
+        },
+
       ]
     },
+    // 路由重定向
     {
       path: "/",
       redirect: "/base/fxuser"

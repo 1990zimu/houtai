@@ -11,11 +11,10 @@
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button @click="add">添加</el-button>
+        <el-button @click="edit">确认修改</el-button>
       </el-form-item>
     </el-form>
-    {{title}}
-    {{value}}
+
     <!-- {{Array.from(new Set(value.flat(Infinity))) }} -->
   </div>
 </template>
@@ -38,28 +37,39 @@ export default {
       // 处理数据为 { .... children:[]}
       this.options = treelist(res.data.info, 0);
     });
+    // 路由 id 请求 当前 角色数据 -- 表单默认值
+    this.axios
+      .get("/jsidinfo", {
+        params: {
+          id: this.$route.params.id
+        }
+      })
+      .then(res => {
+        if (res.data.err_code == 200) {
+          //   console.log(res.data.info);
+          this.title = res.data.info.title;
+          this.value = res.data.info.qxid;
+        }
+      });
+    ////////////
   },
   methods: {
-    add() {
+    edit() {
       let obj = {
+        id: this.$route.params.id,
         title: this.title,
         // qxid: Array.from(new Set(this.value.flat(Infinity)))
         qxid: this.value
       };
-      // console.log(obj);
-      // 将 obj 通过 ajax  传递给 node
-      this.axios.post("/jsadd", obj).then(res => {
+      this.axios.post("/jsedit", obj).then(res => {
         if (res.data.err_code == 200) {
-          // alert("添加成功");
-          // 跳转到 角色列表
           this.$router.push({ name: "jslist" });
-        } else {
-          alert("添加失败");
-          // 清空表单数据
-          this.title = "";
-          this.value = "";
         }
       });
+
+      // console.log(obj);
+      // 将 obj 通过 ajax  传递给 node
+
       // node --- obj  ---mongodb
     }
   }
