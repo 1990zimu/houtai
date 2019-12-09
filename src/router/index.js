@@ -7,6 +7,10 @@ const fxUser = () => import("@/components/fenxi/user.vue")
 const fxOrder = () => import("@/components/fenxi/order.vue")
 const qxglList = () => import("@/components/qxgl/list.vue")
 const qxglAdd = () => import("@/components/qxgl/add.vue")
+const jsList = () => import("@/components/jsgl/list.vue")
+const jsAdd = () => import("@/components/jsgl/add.vue")
+
+
 
 
 import axios from "axios"
@@ -43,6 +47,16 @@ let router = new Router({
           path: 'qxgladd',
           name: 'qxgladd',
           component: qxglAdd,
+        },
+        {
+          path: 'jslist',
+          name: 'jslist',
+          component: jsList,
+        },
+        {
+          path: 'jsadd',
+          name: 'jsadd',
+          component: jsAdd,
         },
       ]
     },
