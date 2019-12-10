@@ -3,7 +3,7 @@
     <el-container>
       <el-header>
         <h1>渠道商商品管理系统</h1>
-        <el-button @click="loginout()">退出</el-button>
+        <el-button @click="loginout()">{{adminname}} 退出</el-button>
       </el-header>
       <el-container class="content">
         <!-- 左侧导航 -->
@@ -41,7 +41,8 @@
 export default {
   data() {
     return {
-      left: []
+      left: [],
+      adminname: ""
     };
   },
   methods: {
@@ -73,10 +74,22 @@ export default {
   },
   mounted() {
     // 请求 所有权限 -- 渲染到 左侧 导航
-    this.axios.get("/listquanxian").then(res => {
-      // console.log(res.data);
-      this.left = res.data.info;
-    });
+    // this.axios.get("/listquanxian").then(res => {
+    //   // console.log(res.data);
+    //   this.left = res.data.info;
+    // });
+
+    // 根据管理员 id  查找对应权限 --渲染到左侧导航
+    this.axios
+      .get("/adminqx", {
+        params: {
+          id: JSON.parse(localStorage.getItem("houtaitoken")).id
+        }
+      })
+      .then(res => {
+        this.left = res.data.qxarr;
+        this.adminname = res.data.name;
+      });
   },
   computed: {
     leftlist() {

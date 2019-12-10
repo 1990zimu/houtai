@@ -47,8 +47,39 @@ export default {
   methods: {
     editRow(id) {
       // 跳转到 修改页面
+      this.$router.push({ name: "glyedit", params: { id: id } });
     },
-    deleteRow(index, row, id) {}
+    deleteRow(index, row, id) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          // 调用 删除管理员 接口
+          this.axios.get(`/glydel?id=${id}`).then(res => {
+            if (res.data.err_code == 200) {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              // 删除dom
+              row.splice(index, 1);
+            } else {
+              this.$message({
+                type: "warning",
+                message: "删除失败!"
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    }
   }
 };
 </script>

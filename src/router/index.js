@@ -16,6 +16,8 @@ const jsEdit = () => import("@/components/jsgl/edit.vue")
 // 管理员 -gly
 const glyList = () => import("@/components/gly/list.vue")
 const glyAdd = () => import("@/components/gly/add.vue")
+const glyEdit = () => import("@/components/gly/edit.vue")
+
 
 
 
@@ -85,6 +87,11 @@ let router = new Router({
           name: 'glyadd',
           component: glyAdd,
         },
+        {
+          path: 'glyedit/:id',
+          name: 'glyedit',
+          component: glyEdit,
+        },
 
       ]
     },
@@ -111,6 +118,7 @@ router.beforeEach((to, from, next) => {
       // console.log(res.data.err_code)
       //如果 res.data.err_code== 400 失败--- 跳转到登录页面
       if (res.data.err_code == 200) {
+
         next();
       } else {
         console.log("token 过期")
