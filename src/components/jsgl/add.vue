@@ -14,8 +14,8 @@
         <el-button @click="add">添加</el-button>
       </el-form-item>
     </el-form>
-    {{title}}
-    {{value}}
+    <!-- {{title}}
+    {{value}}-->
     <!-- {{Array.from(new Set(value.flat(Infinity))) }} -->
   </div>
 </template>

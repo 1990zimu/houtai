@@ -21,9 +21,8 @@ const glyEdit = () => import("@/components/gly/edit.vue")
 
 
 
-
-
 import axios from "axios"
+
 Vue.use(Router)
 
 let router = new Router({
@@ -110,6 +109,8 @@ router.beforeEach((to, from, next) => {
   // console.log(to)
 
   let token = localStorage.getItem("houtaitoken") ? JSON.parse(localStorage.getItem("houtaitoken")).token : ""
+  let id = localStorage.getItem("houtaitoken") ? JSON.parse(localStorage.getItem("houtaitoken")).id : ""
+
   // 排除 登录页面
   if (to.name != "login") {
     axios.get("/checktoken", {
@@ -118,8 +119,22 @@ router.beforeEach((to, from, next) => {
       // console.log(res.data.err_code)
       //如果 res.data.err_code== 400 失败--- 跳转到登录页面
       if (res.data.err_code == 200) {
+        // 有权限 进入 
+        axios.get("/checkqx", {
+          params: {
+            id: id,
+            name: to.name
+          }
+        }).then(val => {
+          if (val.data.err_code == 200) {
+            next();
+          } else {
+            //没有权限 弹框 -- 没有权限请联系超管。。
+            alert("没有权限")
 
-        next();
+          }
+        })
+
       } else {
         console.log("token 过期")
         router.push({ name: "login" })

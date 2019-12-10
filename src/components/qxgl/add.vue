@@ -22,7 +22,7 @@
         <el-button @click="add">添加</el-button>
       </el-form-item>
     </el-form>
-    {{value}}
+    <!-- {{value}} -->
   </div>
 </template>
 
