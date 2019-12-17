@@ -3,11 +3,11 @@
     <div class="img"></div>
     <h2 class="h2">渠道商管理平台</h2>
     <form class="form">
-      <select class="select">
+      <!-- <select class="select">
         <option value>管理员</option>
         <option value>企业</option>
         <option value>平台</option>
-      </select>
+      </select>-->
       <input type="text" placeholder="账号" v-model="name" />
       <input type="text" placeholder="密码" v-model="password" />
       <input type="button" value="登录" @click="loginto()" />
@@ -43,15 +43,16 @@ export default {
           console.log(res.data);
           if (res.data.err_code == 200) {
             // 正确 -- 保存token --- 跳转到 base 页面
-            localStorage.setItem("houtaitoken",JSON.stringify({id:res.data.id,token:res.data.token}))
+            localStorage.setItem(
+              "houtaitoken",
+              JSON.stringify({ id: res.data.id, token: res.data.token })
+            );
 
-            //跳转到 base 页面 
+            //跳转到 base 页面
             this.f = true; //显示 ✅ div
             setTimeout(() => {
               this.$router.push({ name: "fxuser" });
             }, 3000);
-
-
           } else {
             this.name = "";
             this.password = "";

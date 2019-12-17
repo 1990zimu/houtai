@@ -17,6 +17,12 @@ const jsEdit = () => import("@/components/jsgl/edit.vue")
 const glyList = () => import("@/components/gly/list.vue")
 const glyAdd = () => import("@/components/gly/add.vue")
 const glyEdit = () => import("@/components/gly/edit.vue")
+// 商品分类- goodsfl
+const goodsflAdd = () => import("@/components/goodsfl/add.vue")
+const goodsflList = () => import("@/components/goodsfl/list.vue")
+//商品管理 -- sp
+const spList = () => import("@/components/sp/list.vue")
+const spAdd = () => import("@/components/sp/add.vue")
 
 
 
@@ -90,6 +96,28 @@ let router = new Router({
           path: 'glyedit/:id',
           name: 'glyedit',
           component: glyEdit,
+        },
+        // 商品分类管理
+        {
+          path: 'goodsfllist',
+          name: 'goodsfllist',
+          component: goodsflList,
+        },
+        {
+          path: 'goodsfladd',
+          name: 'goodsfladd',
+          component: goodsflAdd,
+        },
+        //商品管理
+        {
+          path: 'splist',
+          name: 'splist',
+          component: spList,
+        },
+        {
+          path: 'spadd',
+          name: 'spadd',
+          component: spAdd,
         },
 
       ]
