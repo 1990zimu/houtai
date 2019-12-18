@@ -1,66 +1,206 @@
 <template>
   <div>
-    <h1>添加商品</h1>
-    <!-- 富文本 -->
-    <quill-editor v-model="zhi" :options="editorOption"></quill-editor>
+    <h1>商品添加</h1>
+    <el-form label-width="80px">
+      <el-form-item label="商品名称">
+        <el-input v-model="goodsname"></el-input>
+      </el-form-item>
+      <!-- 规格参数 -->
+      <el-form-item>
+        <h1 class="gg-title">规格参数</h1>
 
-    <!-- 规格 -->
-    <standard v-for="(v,i) in stArr" :key="i" :st="v" :stindex="i"></standard>
-    <button @click="add">增加规则</button>
-    <br />
-    {{stArr}}
-    <el-button @click="hq">添加</el-button>
+        <!-- 规格组件 -->
+        <ggBox v-for="(v,i) in ggarr" :key="i" :ggArrItem="v" :ggarrindex="i"></ggBox>
+
+        <el-button
+          @click="addggarr( {
+                name: '',
+                can: [
+                    {
+                        name:'',
+                        price: ''
+                    },
+                  
+                ]
+            })"
+        >新增</el-button>
+      </el-form-item>
+
+      <!-- 价格 -->
+      <el-form-item label="商品价格">
+        <el-input v-model="price"></el-input>
+      </el-form-item>
+
+      <!-- 商品缩略图 -->
+      <el-form-item label="缩略图">
+        <el-upload
+          class="avatar-uploader"
+          action="http://127.0.0.1:3000/slfileup"
+          :show-file-list="false"
+          :on-success="slsuccess"
+          name="sl"
+        >
+          <img v-if="imageUrl" :src="`http://127.0.0.1:3000${imageUrl}`" class="avatar" />
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </el-form-item>
+      <!-- 轮播图 -->
+      <el-form-item label="轮播图">
+        <el-upload
+          class="upload-demo"
+          action="http://127.0.0.1:3000/lbfileup"
+          :file-list="fileList"
+          list-type="picture"
+          :on-success="lbsuccess"
+          name="lb"
+        >
+          <el-button size="small" type="primary">点击上传</el-button>
+        </el-upload>
+      </el-form-item>
+      <!-- 富文本编辑器 -->
+      <el-form-item label="商品详情">
+        <quill-editor v-model="goodsinfo"></quill-editor>
+      </el-form-item>
+
+      <!-- 上架下架 -->
+      <el-form-item label="上架下架">
+        <el-switch v-model="showhide" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+      </el-form-item>
+      <!-- 商品分类 -->
+      <el-form-item label="商品分类">
+        <el-cascader
+          :options="options"
+          v-model="flid"
+          :props="{ checkStrictly: true }"
+          :show-all-levels="false"
+        ></el-cascader>
+      </el-form-item>
+      <!-- 提交 -->
+      <el-form-item>
+        <el-button type="danger">预览</el-button>
+        <el-button type="danger" @click="add">提交</el-button>
+        <el-button type="info">取消</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
 <script>
-const toolbarOptions = [
-  ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
-  ["blockquote", "code-block"], // 引用  代码块
-  [{ header: 1 }, { header: 2 }], // 1、2 级标题
-  [{ list: "ordered" }, { list: "bullet" }], // 有序、无序列表
-  [{ script: "sub" }, { script: "super" }], // 上标/下标
-  [{ indent: "-1" }, { indent: "+1" }], // 缩进
-  // [{'direction': 'rtl'}],                         // 文本方向
-  [{ size: ["small", false, "large", "huge"] }], // 字体大小
-  [{ header: [1, 2, 3, 4, 5, 6, false] }], // 标题
-  [{ color: [] }, { background: [] }], // 字体颜色、字体背景颜色
-  [{ font: [] }], // 字体种类
-  [{ align: [] }], // 对齐方式
-  ["clean"], // 清除文本格式
-  ["link", "image", "video"] // 链接、图片、视频
-];
+//加载 ggBox 组件 并渲染
+import ggBox from "@/components/sp/gg-box.vue";
+// 获取 vuex 中的 state.ggarr
 import { mapState, mapMutations } from "vuex";
-import standard from "@/components/sp/standard.vue";
+// ggarr 数组 有几项 调用 几次   ggBox组件 --- 循环  ggarr 数组 调用   ggBox组件
+//处理商品分类数据
+import treelist from "@/myjs/treelist.js";
 export default {
-  data() {
-    return {
-      // 规格
-
-      // 富文本
-      zhi: "",
-      value: "",
-      editorOption: {
-        modules: {
-          toolbar: {
-            container: toolbarOptions
-          }
-        }
-      }
-    };
+  components: {
+    ggBox
   },
   computed: {
-    ...mapState(["stArr"])
+    ...mapState(["ggarr"])
   },
-  components: {
-    standard
+  data() {
+    return {
+      goodsname: "", //商品名称
+      price: "", //商品价格
+      goodsinfo: "", //商品详情
+      showhide: false, //上架下架-默认下架
+      imageUrl: "", //商品缩略图地址
+      fileList: [], //轮播图
+      options: [], // 商品分类数据
+      flid: "" //分类id
+    };
+  },
+  mounted() {
+    this.axios.get("/spflall").then(res => {
+      //   console.log(res.data.info);
+      let data = treelist(res.data.info, 0);
+      this.options = [...this.options, ...data];
+    });
   },
   methods: {
-    ...mapMutations(["add"]),
-    hq() {
-      this.value = this.zhi;
-      console.log(this.value);
+    ...mapMutations(["addggarr"]),
+    //缩略图上传成功后执行的函数
+    slsuccess(res) {
+      // console.log(res);
+      this.imageUrl = res.imgurl;
+    },
+    lbsuccess(res) {
+      this.fileList.push({
+        name: res.imgurl,
+        url: `http://127.0.0.1:3000${res.imgurl}`
+      });
+    },
+    add() {
+      // console.log("商品名称", this.goodsname);
+      // console.log("商品价格", this.price);
+      // console.log("商品详情", this.goodsinfo);
+      // console.log("上架下架", this.showhide);
+      // console.log("商品规格", this.$store.state.ggarr);
+      // console.log("商品缩略图", this.imageUrl);
+      // console.log("商品轮播图", this.fileList);
+      // console.log("商品分类id", this.flid.pop());
+      let obj = {
+        goodsname: this.goodsname,
+        price: this.price,
+        goodsinfo: this.goodsinfo,
+        showhide: this.showhide,
+        ggarr: this.$store.state.ggarr,
+        imageUrl: this.imageUrl,
+        fileList: this.fileList,
+        flid: this.flid.pop()
+      };
+
+      // ajax 将 obj  传递给 node --->mongodb中
+
+      this.axios.post("/addsp", obj).then(res => {
+        console.log(res);
+      });
     }
   }
 };
 </script>
+
+
+<style lang="">
+.gg-title {
+  border-bottom: 1px solid black;
+}
+.gg-box {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+.gg-middle {
+  border: 1px solid black;
+}
+.gg-right-title,
+.gg-right-item {
+  display: flex;
+  justify-content: space-around;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>

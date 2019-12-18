@@ -3,8 +3,10 @@ import Router from 'vue-router'
 // import HelloWorld from '@/components/HelloWorld'
 const login = () => import("@/view/login.vue")
 const base = () => import("@/view/base.vue")
+// 分析-- 统计
 const fxUser = () => import("@/components/fenxi/user.vue")
 const fxOrder = () => import("@/components/fenxi/order.vue")
+const fxGoods = () => import("@/components/fenxi/goods.vue")
 //权限管理 -- qxgl
 const qxglList = () => import("@/components/qxgl/list.vue")
 const qxglAdd = () => import("@/components/qxgl/add.vue")
@@ -53,6 +55,11 @@ let router = new Router({
           path: 'fxorder',
           name: 'fxorder',
           component: fxOrder,
+        },
+        {
+          path: 'fxgoods',
+          name: 'fxsp',
+          component: fxGoods,
         },
         //权限管理 --qxgl
         {

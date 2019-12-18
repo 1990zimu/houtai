@@ -1,80 +1,46 @@
-// 载入vue
+//1、载入vue
 import Vue from "vue";
-// 载入vuex
-import Vuex from "vuex"
-// 使用 vuex
-Vue.use(Vuex)
+// 2、载入vuex
+import Vuex from "vuex";
+// 3.使用vuex
+Vue.use(Vuex);
 
-// 创建仓库
+// 4、创建仓库
 const store = new Vuex.Store({
-    //状态
+    // 状态
     state: {
-        // 规格 数组
-        stArr: [
-            {
-                "name": "8G",
-                stitem: [
-                    { "itemname": "白色", "price": 100 },
-                    { "itemname": "黑色", "price": 200 }
-                ]
-            },
-            {
-                "name": "16G",
-                stitem: [
-                    { "itemname": "白色", "price": 300 },
-                    { "itemname": "黑色", "price": 300 },
-                    { "itemname": "灰色", "price": 400 },
+        ggarr: [
 
-                ]
-            }
         ]
     },
-    // 方法 --- 可以是异步的操作
+    // 异步方法
     actions: {},
-    // 唯一改变 state 的方法
+    //改变 状态的方法
     mutations: {
-        //添加一项 规则
-        add(state) {
-            state.stArr.push({
-                "name": "",
-                stitem: [
-                    { "itemname": "", "price": "" },
-
-                ]
-            })
+        //增加一整项规格 
+        addggarr(state, obj) {
+            state.ggarr.push(obj);
         },
-        // 根据下标删除 一项规则
-        delone(state, index) {
-            state.stArr.splice(index, 1)
+        //删除一整项规格 --下标
+        delggarr(state, ggarrindex) {
+            state.ggarr.splice(ggarrindex, 1)
         },
-        // 添加一项 规则 参数 +价格
-        addstitem(state, index) {
-            state.stArr[index].stitem.push({ "itemname": "", "price": "" })
+        //增加规格中 一项参数，价格
+        addggarrcan(state, obj) {
+            let { ggarrindex, canobj } = obj
+            state.ggarr[ggarrindex].can.push(canobj)
         },
-        // stArr 的下标  stitem 下标
-        delstitemone(state, obj) {
-            console.log(obj)
-            let { stindex, stitemindex } = obj
-
-            state.stArr[stindex].stitem.splice(stitemindex, 1)
-        },
-
-
-        // 修改  strArr[stindex].name  ---- stindex, name
-
-        editStrArrName(state, obj) {
-            let { stindex, name } = obj;
-            state.stArr[stindex].name = name;
+        //删除规格中 一项参数，价格
+        delggarrcan(state, obj) {
+            let { ggarrindex, canindex } = obj
+            state.ggarr[ggarrindex].can.splice(canindex, 1)
         }
-
-
     },
-    // 相当于计算属性
+    // 计算属性
     getters: {}
-
 
 })
 
-//导出仓库
+//5、导出
 
 export default store;

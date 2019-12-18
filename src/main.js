@@ -18,16 +18,19 @@ import VueAxios from "vue-axios";
 // 全局 接口 地址 前缀
 axios.defaults.baseURL = "http://127.0.0.1:3000"
 Vue.use(VueAxios, axios)
-// 载入 Vue-Quill-Editor
+// 富文本编辑器 vue-quill-editor
 import QuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.bubble.css'
 import 'quill/dist/quill.snow.css'
 Vue.use(QuillEditor)
-// 载入 store 
+
+// 载入 vuex 的 store
 import store from "./store/index.js"
 Vue.config.productionTip = false
-
+// 载入 echarts 
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
