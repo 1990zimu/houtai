@@ -25,7 +25,8 @@ const goodsflList = () => import("@/components/goodsfl/list.vue")
 //商品管理 -- sp
 const spList = () => import("@/components/sp/list.vue")
 const spAdd = () => import("@/components/sp/add.vue")
-
+// 订单管理 --gldd
+const glddList = () => import("@/components/gldd/list.vue")
 
 
 
@@ -125,6 +126,12 @@ let router = new Router({
           path: 'spadd',
           name: 'spadd',
           component: spAdd,
+        },
+        //订单管理
+        {
+          path: 'gldd',
+          name: 'gldd',
+          component: glddList,
         },
 
       ]
